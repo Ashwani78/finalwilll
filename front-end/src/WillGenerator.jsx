@@ -1770,6 +1770,7 @@ const WillGenerator = ({ subscription }) => {
             <option value="Furniture">Furniture</option>
             <option value="Paintings">Paintings</option>
             <option value="Firearm">Firearm</option>
+            <option value = "Residual Estate">Residual Estate</option>
           </select>
         </div>
 
@@ -3057,8 +3058,8 @@ const WillGenerator = ({ subscription }) => {
 
       // Two-column witness layout
       const columns = [
-        { x: 90, width: 300 },
-        { x: 370, width: 300 },
+        { x: 90, width: 260 },
+        { x: 320, width: 260 },
       ];
 
       formData.witnesses?.forEach((witness, index) => {
@@ -3080,7 +3081,7 @@ const WillGenerator = ({ subscription }) => {
         });
 
         // Draw dotted line
-        drawDottedLine(currentPage, column.x + 80, localY, 200);
+        drawDottedLine(currentPage, column.x + 50, localY, 200);
 
         if (witness.name) {
           writeText(currentPage, witness.name, {
