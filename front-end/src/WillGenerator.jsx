@@ -2986,10 +2986,19 @@ const WillGenerator = ({ subscription }) => {
       });
       yOffset -= 20;
 
+      const array = [];
+      formData.possessions?.map((item, index) => {
+        if (item.type === "Residual Estate") {
+          item.beneficiaries?.map((single, index) => {
+            array.push(single.fullName);
+          });
+        }
+      });
+
       yOffset = writeText(
         currentPage,
         `I give, devise and bequeath all the rest, residue and remainder of my estate, including any proceeds from the sale of assets to ${
-          formData.residualEstate?.beneficiaries?[0] || ""
+          array?.beneficiaries? || ""
         } in equal shares.`,
         {
           y: yOffset,
