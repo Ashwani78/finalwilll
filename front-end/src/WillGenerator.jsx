@@ -3041,24 +3041,24 @@ const WillGenerator = ({ subscription }) => {
 
       // Add "Witnesses to sign here" with vertical line
       const startY = yOffset;
-      writeText(currentPage, "Witnesses", { y: yOffset, x: 50 });
+      writeText(currentPage, "Witnesses", { y: yOffset, x: 10 });
       yOffset -= 15;
-      writeText(currentPage, "to sign", { y: yOffset, x: 50 });
+      writeText(currentPage, "to sign", { y: yOffset, x: 10 });
       yOffset -= 15;
-      writeText(currentPage, "here.", { y: yOffset, x: 50 });
+      writeText(currentPage, "here.", { y: yOffset, x: 10 });
 
       // Draw vertical line
       currentPage.drawLine({
-        start: { x: 110, y: startY + 20 },
-        end: { x: 110, y: yOffset - 10 },
+        start: { x: 70, y: startY + 20 },
+        end: { x: 70, y: yOffset - 10 },
         thickness: 1,
         color: rgb(0, 0, 0),
       });
 
       // Two-column witness layout
       const columns = [
-        { x: 130, width: 300 },
-        { x: 430, width: 300 },
+        { x: 90, width: 300 },
+        { x: 370, width: 300 },
       ];
 
       formData.witnesses?.forEach((witness, index) => {
