@@ -3029,12 +3029,7 @@ const WillGenerator = ({ subscription }) => {
       // ... your existing residual estate code ...
 
       // Witness Section (keep exactly as is)
-      yOffset = writeText(currentPage, "WITNESSES", {
-        y: yOffset,
-        font: timesBold,
-        size: 16,
-      });
-      yOffset -= 40;
+
 
       // Witness Section
       yOffset = writeText(currentPage, "WITNESSES", {
@@ -3062,8 +3057,8 @@ const WillGenerator = ({ subscription }) => {
 
       // Two-column witness layout
       const columns = [
-        { x: 130, width: 250 },
-        { x: 430, width: 250 },
+        { x: 130, width: 300 },
+        { x: 430, width: 300 },
       ];
 
       formData.witnesses?.forEach((witness, index) => {
