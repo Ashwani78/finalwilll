@@ -2989,7 +2989,7 @@ const WillGenerator = ({ subscription }) => {
       yOffset = writeText(
         currentPage,
         `I give, devise and bequeath all the rest, residue and remainder of my estate, including any proceeds from the sale of assets to ${
-          formData.residualEstate?.beneficiaries?.join(", ") || ""
+          formData.residualEstate?.beneficiaries?[0] || ""
         } in equal shares.`,
         {
           y: yOffset,
