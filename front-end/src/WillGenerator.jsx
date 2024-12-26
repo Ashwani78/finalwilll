@@ -2993,13 +2993,13 @@ const WillGenerator = ({ subscription }) => {
             array.push(single.fullName);
           });
         }
+        
       });
 
       yOffset = writeText(
         currentPage,
-        `I give, devise and bequeath all the rest, residue and remainder of my estate, including any proceeds from the sale of assets to ${
-          array?.beneficiaries? || ""
-        } in equal shares.`,
+        `I give, devise and bequeath all the rest, residue and remainder of my estate, including any proceeds from the sale of assets to 
+        ${array?.join(",") || "" } in equal shares.`,
         {
           y: yOffset,
           lineSpacing: 1.5,
