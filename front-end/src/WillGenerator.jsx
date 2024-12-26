@@ -158,7 +158,7 @@ const WillGenerator = ({ subscription }) => {
       } = await supabase.auth.getUser();
       const mail = user.email;
       axios
-        .get("http://localhost:9000/getwill", {
+        .get("https://finalwilll-back.vercel.app/getwill", {
           params: {
             email: mail,
           },
@@ -278,7 +278,7 @@ const WillGenerator = ({ subscription }) => {
       const mail = user.email;
 
       axios
-        .post("http://localhost:9000/willupload", {
+        .post("https://finalwilll-back.vercel.app/willupload", {
           usermail: mail,
           formData: formData,
         })
