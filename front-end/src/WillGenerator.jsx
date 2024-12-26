@@ -2500,6 +2500,7 @@ const WillGenerator = ({ subscription }) => {
       const pdfDoc = await PDFDocument.create();
       const timesRoman = await pdfDoc.embedFont(StandardFonts.TimesRoman);
       const timesBold = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
+      console.log(formData)
 
       // Keep your existing helper functions exactly as they are
       const addPage = (pageNum) => {
