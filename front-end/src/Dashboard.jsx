@@ -124,7 +124,7 @@ const Dashboard = () => {
       } = await supabase.auth.getUser();
       const mail = user.email;
       axios
-        .get("http://localhost:9000/getwill", {
+        .get("https://finalwilll-back.vercel.app/getwill", {
           params: {
             email: mail,
           },
@@ -645,7 +645,7 @@ const Dashboard = () => {
       }
 
       axios
-        .delete("http://localhost:9000/delete", {
+        .delete("https://finalwilll-back.vercel.app/delete", {
           data: { email: mail },
         })
         .then((response) => {
