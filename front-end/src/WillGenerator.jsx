@@ -2537,54 +2537,54 @@ const WillGenerator = ({ subscription }) => {
       };
 
       // Keep your existing writeText function exactly as is
-      const writeText = (page, text, options = {}) => {
-        const {
-          x = 50,
-          y,
-          size = 12,
-          font = timesRoman,
-          color = rgb(0, 0, 0),
-          maxWidth = 500,
-          indent = 0,
-          align = "left",
-          lineSpacing = 1.2,
-        } = options;
+     const writeText = (page, text, options = {}) => {
+  const {
+    x = 50,
+    y,
+    size = 12,
+    font = timesRoman,
+    color = rgb(0, 0, 0),
+    maxWidth = 500,
+    indent = 0,
+    align = "left",
+    lineSpacing = 1.2,
+  } = options;
 
-        const lines = [];
-        let currentLine = "";
-        const words = text.split(" ");
-        const actualX = x + indent * 20;
+  const lines = text.split("\n"); // Split the text into lines by \n
+  let yPos = y;
 
-        if (align === "center") {
-          const width = font.widthOfTextAtSize(text, size);
-          const centerX = (page.getWidth() - width) / 2;
-          page.drawText(text, { x: centerX, y, size, font, color });
-          return y - size * lineSpacing;
-        }
+  lines.forEach((line) => {
+    const words = line.split(" ");
+    const actualX = x + indent * 20;
 
-        for (const word of words) {
-          const testLine = currentLine ? `${currentLine} ${word}` : word;
-          const width = font.widthOfTextAtSize(testLine, size);
+    let currentLine = "";
+    const renderedLines = [];
 
-          if (width > maxWidth && currentLine) {
-            lines.push(currentLine);
-            currentLine = word;
-          } else {
-            currentLine = testLine;
-          }
-        }
-        if (currentLine) {
-          lines.push(currentLine);
-        }
+    for (const word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      const width = font.widthOfTextAtSize(testLine, size);
 
-        let yPos = y;
-        lines.forEach((line) => {
-          page.drawText(line, { x: actualX, y: yPos, size, font, color });
-          yPos -= size * lineSpacing;
-        });
+      if (width > maxWidth && currentLine) {
+        renderedLines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
 
-        return yPos - size * 0.5;
-      };
+    if (currentLine) {
+      renderedLines.push(currentLine);
+    }
+
+    renderedLines.forEach((renderedLine) => {
+      page.drawText(renderedLine, { x: actualX, y: yPos, size, font, color });
+      yPos -= size * lineSpacing;
+    });
+  });
+
+  return yPos - size * 0.5; // Return the updated yOffset
+};
+
 
       // Keep your existing helper functions
       const drawDottedLine = (page, startX, startY, length, options = {}) => {
