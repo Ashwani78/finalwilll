@@ -2988,26 +2988,23 @@ const WillGenerator = ({ subscription }) => {
       });
       yOffset -= 20;
 
-      const array = [];
-      formData.possessions?.map((item, index) => {
-        if (item.type === "Residual Estate") {
-          item.beneficiaries?.map((single, index) => {
-            array.push(single.fullName);
-          });
-        }
-        
-      });
+    const array = [];
+formData.possessions?.forEach((item) => {
+  if (item.type === "Residual Estate") {
+    item.beneficiaries?.forEach((single) => {
+      array.push(single.fullName);
+    });
+  }
+});
 
-      yOffset = writeText(
-        currentPage,
-        `I give, devise and bequeath all the rest, residue and remainder of my estate, including any proceeds from the sale of assets to 
-        ${array?.join(",") || "" } in equal shares.`,
-        {
-          y: yOffset,
-          lineSpacing: 1.5,
-        }
-      );
-      yOffset -= 40;
+const text = `I give, devise and bequeath all the rest, residue and remainder of my estate, including any proceeds from the sale of assets to ${array.join(", ") || "no one"} in equal shares.`;
+
+yOffset = writeText(currentPage, text, {
+  y: yOffset,
+  lineSpacing: 1.5,
+});
+yOffset -= 40;
+
 
       // Signature Section
       yOffset = writeText(
