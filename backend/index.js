@@ -6,7 +6,7 @@ const UserModel = require("./UserModel");
 const app = express();
 
 app.use(express.json());
-app.use(cors({origin : "https://finalwilll-lovat.vercel.app"}));
+app.use(cors({origin : "https://finalwilll-front.vercel.app"}));
 app.use(express.urlencoded({ extended: true }));
 
 //Change the connect link with mongo local server in c-pannel note: dotenv is not installed
