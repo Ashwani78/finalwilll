@@ -2997,7 +2997,7 @@ formData.possessions?.forEach((item) => {
   }
 });
 
-const text = `I give, devise and bequeath all the rest, residue and remainder of my estate, including any proceeds from the sale of assets to ${array.join(", ") || "no one"} in equal shares.`;
+const text = `I give, devise and bequeath all the rest, residue and remainder of my estate, including any proceeds from the sale of assets to ${array.join(", ")} in equal shares.`;
 
 yOffset = writeText(currentPage, text, {
   y: yOffset,
