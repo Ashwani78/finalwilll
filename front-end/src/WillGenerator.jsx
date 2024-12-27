@@ -268,6 +268,7 @@ const WillGenerator = ({ subscription }) => {
 
   const handleSave = async () => {
     try {
+      console.log(formData)
       // Update subscription
 
       // Save to localStorage
