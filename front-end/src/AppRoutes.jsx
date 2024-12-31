@@ -6,6 +6,7 @@ import Login from "./Login";
 import SubscriptionChoice from "./SubscriptionChoice";
 import Dashboard from "./Dashboard";
 import EditWill from "./EditWill";
+import Home from "./Home";
 
 const AppRoutes = ({ user, subscription }) => {
   return (
@@ -49,7 +50,7 @@ const AppRoutes = ({ user, subscription }) => {
       {/* Default redirect */}
       <Route
         path="/"
-        element={<Navigate to={user ? "/subscription" : "/login"} replace />}
+        element={user ? <Navigate to="/subscription" /> : <Home />}
       />
 
       <Route
