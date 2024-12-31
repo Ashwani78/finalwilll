@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 //Change the connect link with mongo local server in c-pannel note: dotenv is not installed
 
 const mongoURI =
-  "mongodb+srv://teja29204:OFv8nW8niqmbOo32@back.ztguk.mongodb.net/?retryWrites=true&w=majority&appName=Back";
+  "mongodb+srv://teja29204:hscvjshdcbvsajdh@back.ztguk.mongodb.net/?retryWrites=true&w=majority&appName=Back";
 
 // Connect to MongoDB
 mongoose
