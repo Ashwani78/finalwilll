@@ -3033,11 +3033,22 @@ yOffset -= 40;
         }
       );
 
-      yOffset -= 40;
+     
 
       // ... your existing residual estate code ...
 
       // Witness Section (keep exactly as is)
+          yOffset -= 40;
+      yOffset = writeText(
+        currentPage,
+        "executed this Last will and testament willingly and in the presence of the following witnesses, who are present at the same time and who have signed as witnesses in my presence:",
+        {
+          y: yOffset,
+          lineSpacing: 1.5,
+        }
+      );
+
+       yOffset -= 40;
 
 
       // Witness Section
@@ -3089,7 +3100,7 @@ yOffset -= 40;
         });
 
         // Draw dotted line
-        drawDottedLine(currentPage, column.x + 50, localY, 200);
+        drawDottedLine(currentPage, column.x + 80, localY, 200);
 
         if (witness.name) {
           writeText(currentPage, witness.name, {
@@ -3159,15 +3170,7 @@ yOffset -= 40;
       // ... rest of your existing witness section code ...
 
       // Final Declaration (keep exactly as is)
-      yOffset -= 165;
-      yOffset = writeText(
-        currentPage,
-        "executed this Last will and testament willingly and in the presence of the following witnesses, who are present at the same time and who have signed as witnesses in my presence:",
-        {
-          y: yOffset,
-          lineSpacing: 1.5,
-        }
-      );
+  
 
       // Generate the final PDF
       const pdfBytes = await pdfDoc.save();
