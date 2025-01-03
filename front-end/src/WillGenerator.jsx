@@ -3105,7 +3105,7 @@ yOffset -= 40;
         if (witness.name) {
           writeText(currentPage, witness.name, {
             y: localY,
-            x: column.x + 60,
+            x: column.x + 58,
           });
         }
 
@@ -3122,7 +3122,7 @@ yOffset -= 40;
         if (witness.email) {
           writeText(currentPage, witness.email, {
             y: localY,
-            x: column.x + 60,
+            x: column.x + 55,
           });
         }
 
@@ -3144,7 +3144,7 @@ yOffset -= 40;
             .join(", ");
           writeText(currentPage, fullAddress, {
             y: localY,
-            x: column.x + 60,
+            x: column.x + 55,
           });
         }
 
@@ -3162,7 +3162,7 @@ yOffset -= 40;
         if (witness.occupation) {
           writeText(currentPage, witness.occupation, {
             y: localY,
-            x: column.x + 60,
+            x: column.x + 70,
           });
         }
       });
