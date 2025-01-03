@@ -2773,7 +2773,7 @@ const WillGenerator = ({ subscription }) => {
           }`;
           yOffset = writeText(page, executorText, {
             y: yOffset,
-            lineSpacing: 1,
+            lineSpacing: 0.5,
           });
           yOffset -= 20;
         }
@@ -2784,7 +2784,7 @@ const WillGenerator = ({ subscription }) => {
         'to be the Executor and Trustee of this my Will (hereinafter referred to as "my Trustee").',
         {
           y: yOffset,
-          lineSpacing: 1,
+          lineSpacing: 0.5,
         }
       );
       yOffset -= 30;
@@ -2814,7 +2814,7 @@ const WillGenerator = ({ subscription }) => {
         "I HEREBY DIRECT that my body be prepared for burial in an appropriate manner and that my funeral expenses and any debts be paid out of my estate, along with the following:",
         {
           y: yOffset,
-          lineSpacing: 1,
+          lineSpacing: 0.5,
         }
       );
       yOffset -= 25;
@@ -2836,10 +2836,10 @@ const WillGenerator = ({ subscription }) => {
 
       // Songs
       formData.songs?.forEach((song) => {
-        yOffset = writeText(currentPage, `- ${song}`, {
+        yOffset = writeText(currentPage, `- ${Object.values(songObj)[0]}` , {
           y: yOffset,
           indent: 1,
-          lineSpacing: 1,
+          lineSpacing: 0.5 ,
         });
         yOffset -= 15;
       });
