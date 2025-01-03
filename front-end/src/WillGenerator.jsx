@@ -2738,7 +2738,7 @@ const WillGenerator = ({ subscription }) => {
         formData.parish || ""
       }.`;
       yOffset = writeText(page, personalInfo, { y: yOffset, lineSpacing: 1.2 });
-      yOffset -= 30;
+      yOffset -= 20;
 
       // Section 1 - Revocation
       yOffset = writeText(
@@ -2749,7 +2749,7 @@ const WillGenerator = ({ subscription }) => {
           lineSpacing: 1.2,
         }
       );
-      yOffset -= 20;
+      yOffset -= 15;
 
       // Section 2 - Executors
       yOffset = writeText(page, "2. APPOINTMENT OF EXECUTORS", {
@@ -3105,7 +3105,7 @@ yOffset -= 40;
         if (witness.name) {
           writeText(currentPage, witness.name, {
             y: localY,
-            x: column.x + 80,
+            x: column.x + 60,
           });
         }
 
@@ -3122,7 +3122,7 @@ yOffset -= 40;
         if (witness.email) {
           writeText(currentPage, witness.email, {
             y: localY,
-            x: column.x + 80,
+            x: column.x + 60,
           });
         }
 
@@ -3144,7 +3144,7 @@ yOffset -= 40;
             .join(", ");
           writeText(currentPage, fullAddress, {
             y: localY,
-            x: column.x + 80,
+            x: column.x + 60,
           });
         }
 
@@ -3162,7 +3162,7 @@ yOffset -= 40;
         if (witness.occupation) {
           writeText(currentPage, witness.occupation, {
             y: localY,
-            x: column.x + 80,
+            x: column.x + 60,
           });
         }
       });
