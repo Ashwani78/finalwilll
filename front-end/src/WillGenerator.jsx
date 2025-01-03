@@ -2547,7 +2547,7 @@ const WillGenerator = ({ subscription }) => {
     maxWidth = 500,
     indent = 0,
     align = "left",
-    lineSpacing = 1.2,
+    lineSpacing = 1,
   } = options;
 
   const lines = text.split("\n"); // Split the text into lines by \n
@@ -2727,7 +2727,7 @@ const WillGenerator = ({ subscription }) => {
         font: timesBold,
         align: "center",
       });
-      yOffset -= 30;
+      yOffset -= 20;
 
       // Personal Information (keep exactly as is)
       const personalInfo = `THIS IS THE LAST WILL AND TESTAMENT of me ${
@@ -2737,7 +2737,7 @@ const WillGenerator = ({ subscription }) => {
       } whose address is ${formData.address || ""} in the parish of ${
         formData.parish || ""
       }.`;
-      yOffset = writeText(page, personalInfo, { y: yOffset, lineSpacing: 1.5 });
+      yOffset = writeText(page, personalInfo, { y: yOffset, lineSpacing: 1.2 });
       yOffset -= 30;
 
       // Section 1 - Revocation
@@ -2746,17 +2746,17 @@ const WillGenerator = ({ subscription }) => {
         "1. I HEREBY REVOKE all Wills and Testamentary dispositions heretofore by me made AND DECLARE this to be my Last Will and Testament.",
         {
           y: yOffset,
-          lineSpacing: 1,
+          lineSpacing: 1.2,
         }
       );
-      yOffset -= 30;
+      yOffset -= 20;
 
       // Section 2 - Executors
       yOffset = writeText(page, "2. APPOINTMENT OF EXECUTORS", {
         y: yOffset,
         font: timesBold,
       });
-      yOffset -= 20;
+      yOffset -= 15;
 
       formData.executors?.forEach((executor, index) => {
         if (
@@ -2773,7 +2773,7 @@ const WillGenerator = ({ subscription }) => {
           }`;
           yOffset = writeText(page, executorText, {
             y: yOffset,
-            lineSpacing: 0.5,
+            lineSpacing: 1.2,
           });
           yOffset -= 20;
         }
@@ -2784,10 +2784,10 @@ const WillGenerator = ({ subscription }) => {
         'to be the Executor and Trustee of this my Will (hereinafter referred to as "my Trustee").',
         {
           y: yOffset,
-          lineSpacing: 0.5,
+          lineSpacing: 1,
         }
       );
-      yOffset -= 30;
+      yOffset -= 20;
 
       // Section 3 - Debts
       yOffset = writeText(
@@ -2795,10 +2795,10 @@ const WillGenerator = ({ subscription }) => {
         "3. I DIRECT that as soon as possible after my decease my Trustees shall pay all my just debts, funeral, tombing and testamentary expenses.",
         {
           y: yOffset,
-          lineSpacing: 1,
+          lineSpacing: 1.2,
         }
       );
-      yOffset -= 30;
+      yOffset -= 20;
 
       // Section 4 - Funeral Arrangements
       ({ page: currentPage, yOffset } = checkNewPage(yOffset, 2));
@@ -2807,17 +2807,17 @@ const WillGenerator = ({ subscription }) => {
         y: yOffset,
         font: timesBold,
       });
-      yOffset -= 20;
+      yOffset -= 15;
 
       yOffset = writeText(
         currentPage,
         "I HEREBY DIRECT that my body be prepared for burial in an appropriate manner and that my funeral expenses and any debts be paid out of my estate, along with the following:",
         {
           y: yOffset,
-          lineSpacing: 0.5,
+          lineSpacing: 1.2,
         }
       );
-      yOffset -= 25;
+      yOffset -= 15;
 
       // Funeral Details
       [
@@ -2831,7 +2831,7 @@ const WillGenerator = ({ subscription }) => {
           y: yOffset,
           lineSpacing: 0.5,
         });
-        yOffset -= 15;
+        yOffset -= 10;
       });
 
       // Songs
@@ -2841,7 +2841,7 @@ const WillGenerator = ({ subscription }) => {
           indent: 1,
           lineSpacing: 0.5 ,
         });
-        yOffset -= 15;
+        yOffset -= 10;
       });
 
       // Sections 1-4 remain exactly the same...
@@ -2854,7 +2854,7 @@ const WillGenerator = ({ subscription }) => {
           lineSpacing: 1.5,
         }
       );
-      yOffset -= 30;
+      yOffset -= 20;
 
       // Section 2-4 (keep exactly as is)
       // ... your existing executor and funeral arrangement code ...
