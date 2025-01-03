@@ -2746,7 +2746,7 @@ const WillGenerator = ({ subscription }) => {
         "1. I HEREBY REVOKE all Wills and Testamentary dispositions heretofore by me made AND DECLARE this to be my Last Will and Testament.",
         {
           y: yOffset,
-          lineSpacing: 1.5,
+          lineSpacing: 1,
         }
       );
       yOffset -= 30;
@@ -2836,7 +2836,7 @@ const WillGenerator = ({ subscription }) => {
 
       // Songs
       formData.songs?.forEach((song) => {
-        yOffset = writeText(currentPage, `- ${Object.values(songObj)[0]}` , {
+        yOffset = writeText(currentPage, `- ${Object.values(song)[0]}` , {
           y: yOffset,
           indent: 1,
           lineSpacing: 0.5 ,
