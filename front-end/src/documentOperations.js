@@ -255,6 +255,7 @@ const Dashboard = () => {
     if (filePath) {
       // Generate the signed URL and set it
       const url = await createDownloadLink(filePath);
+      console.log(url)
       setFileUrl(url);
     }
   };
