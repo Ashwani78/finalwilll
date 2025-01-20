@@ -282,6 +282,7 @@ const uploadFile = async (file) => {
     const fileExt = file.name.split(".").pop();
     const fileName = `Will-${Date.now()}.${fileExt}`; // Add some unique naming to avoid conflicts
     const filePath = `my-files/${fileName}`;
+    setSharewill(file);
     
     const { data, error } = await supabase.storage.from("share").upload(filePath, file);
 
