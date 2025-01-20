@@ -44,7 +44,7 @@ const Login = () => {
 
       alert("Profile created successfully.");
     }
-}
+} }
     if (error) {
       alert(error.message);
     } else {
