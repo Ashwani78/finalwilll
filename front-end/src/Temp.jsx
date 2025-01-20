@@ -10,9 +10,9 @@ const Temp = () => {
     link.click();
   };
   useEffect(() => {
-    downloadFile(id);
+    downloadFile(`https://finalwilll-84pu.vercel.app/${id}`);
   }, []);
-  return <div>Temp</div>;
+  return <div>File Downloded</div>;
 };
 
 export default Temp;
