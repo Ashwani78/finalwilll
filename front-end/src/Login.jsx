@@ -37,10 +37,8 @@ const Login = () => {
       .single();
 
     if (profileError) {
-      console.log("Profile fetch error:", profileError.message);
       
       if (profileError.code === 'PGRST116') { // Profile doesn't exist (or empty result)
-        console.log("Creating new profile");
 
         // No profile found, create a new profile
         const { data, error: profileCreationError } = await supabase
@@ -61,11 +59,9 @@ const Login = () => {
         }
 
         console.log("Profile created successfully:", data);
-        alert("Profile created successfully.");
       } else {
         // Handle other errors related to profile fetching
         console.error("Error fetching profile:", profileError.message);
-        alert(`Error fetching profile: ${profileError.message}`);
         return;
       }
     }
