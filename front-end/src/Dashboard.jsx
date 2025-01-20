@@ -249,21 +249,53 @@ const Dashboard = () => {
     setShowUploadModal(false);
   };
 
-  const handleShareLink = async (event) => {
-    const files = event.target.files; // Get the selected files
-    if (files && files.length > 0) {
-      setSharewill(files); // Store the selected files
+ const handleShareLink = async (event) => {
+  // Upload the file and get the file path
+  const filePath = await uploadFile(event.target.files[0]); // Assuming the input is a file input
 
-      // Logic for uploading the file (to a server or cloud storage)
-      const file = files[0]; // Get the first file selected
+  if (filePath) {
+    // Generate the signed URL and download the file directly
+    const url = await createDownloadLink(filePath);
+   setFileUrl(url);
+  }
+};
 
-      // Normally, here you would upload the file to your server or a cloud service like AWS S3 or Firebase
-      // For now, we will simulate a file URL
-      const fileURL = URL.createObjectURL(file); // Create a temporary URL for the file
-      setFileUrl(fileURL); // Store the file URL
-      console.log("File uploaded and available at:", fileURL);
-    }
-  };
+const createDownloadLink = async (filePath) => {
+  try {
+    // Set the TTL (time-to-live) to 30 days (2592000 seconds)
+    const { data, error } = await supabase.storage
+      .from("share") // Replace with your bucket name
+      .createSignedUrl(filePath, 2592000); // 30 days in seconds
+
+    if (error) throw error;
+
+    // Return the signed URL
+    return data.signedUrl;
+  } catch (error) {
+    console.error("Error generating download link:", error.message);
+    return null;
+  }
+};
+
+const uploadFile = async (file) => {
+  try {
+    const fileExt = file.name.split(".").pop();
+    const fileName = `Will-${Date.now()}.${fileExt}`; // Add some unique naming to avoid conflicts
+    const filePath = `my-files/${fileName}`;
+    
+    const { data, error } = await supabase.storage.from("share").upload(filePath, file);
+
+    if (error) throw error;
+
+    // Return the file path after uploading
+    return filePath;
+  } catch (error) {
+    console.error("Error uploading file:", error.message);
+    return null;
+  }
+};
+
+
 
   const handleDeleteFile = async (fileId) => {
     if (
