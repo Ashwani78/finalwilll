@@ -10,6 +10,16 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     const { user, error } = await supabase.auth.signUp({ email, password });
+    const { data, error: profileError } = await supabase
+    .from("profiles")
+    .insert([
+      {
+        id: user.id, // Use the user.id from the signed-up user
+        subscription_type: "onetime",
+        subscription_start: new Date().toISOString().split("T")[0],
+        subscription_end: new Date().toISOString().split("T")[0],// Current date
+      },
+    ]);
     console.log(user);
     if (error) {
       alert(error.message);
