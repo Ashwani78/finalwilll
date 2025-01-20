@@ -10,18 +10,25 @@ const Login = () => {
   const handleLogin = async (e) => {
   e.preventDefault();
   
-  const { user, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+  try {
+    // Try to sign in
+    const { user, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-  if (error) {
-    alert(error.message);
-    return;
-  }
+    if (error) {
+      alert(error.message);
+      return;
+    }
 
-  if (user) {
-    console.log("user testing")
+    console.log("Authenticated user:", user); // Log the user object to verify
+
+    if (!user) {
+      alert("No authenticated user.");
+      return;
+    }
+
     // Attempt to fetch profile data by user_id
     const { data: profileData, error: profileError } = await supabase
       .from("profiles")
@@ -30,14 +37,17 @@ const Login = () => {
       .single();
 
     if (profileError) {
+      console.log("Profile fetch error:", profileError.message);
+      
       if (profileError.code === 'PGRST116') { // Profile doesn't exist (or empty result)
+        console.log("Creating new profile");
+
         // No profile found, create a new profile
-        console.log("creating new profile")
         const { data, error: profileCreationError } = await supabase
           .from("profiles")
           .insert([
             {
-              user_id: user.id, // Use user_id to link profile with user
+              user_id: user.id, // Link profile with user
               subscription_type: "onetime", // Default subscription type
               subscription_start: new Date().toISOString().split("T")[0], // Current date
               subscription_end: new Date().toISOString().split("T")[0], // Current date
@@ -45,20 +55,28 @@ const Login = () => {
           ]);
 
         if (profileCreationError) {
+          console.error("Profile creation error:", profileCreationError.message);
           alert(profileCreationError.message);
           return;
         }
 
+        console.log("Profile created successfully:", data);
         alert("Profile created successfully.");
       } else {
         // Handle other errors related to profile fetching
+        console.error("Error fetching profile:", profileError.message);
         alert(`Error fetching profile: ${profileError.message}`);
         return;
       }
     }
 
-    // If profile exists, or after profile creation, navigate to form
-    navigate("/form"); // Redirect to form after login
+  } catch (error) {
+    // Catch any errors
+    console.error("Error during login:", error.message);
+    alert("An error occurred during login.");
+  } finally {
+    // Always navigate to the form page, regardless of success or failure
+    navigate("/form");
   }
 };
 
