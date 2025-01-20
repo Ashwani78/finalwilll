@@ -8,10 +8,38 @@ const Login = () => {
   const navigate = useNavigate();
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { user, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+    if (user) {
+    // Check if the profile already exists for the user
+    const { data: profileData, error: profileError } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .single(); // Use single() to get one result (or null if not found)
+
+    if (profileError && profileError.code === 'PGRST116') { // Profile doesn't exist
+      // Create a new profile for the user if it doesn't exist
+      const { data, profileCreationError } = await supabase
+        .from("profiles")
+        .insert([
+          {
+            id: user.id,
+            subscription_type: "onetime",
+            subscription_start: new Date().toISOString().split("T")[0],
+            subscription_end: new Date().toISOString().split("T")[0], // Current date
+          },
+        ]);
+
+      if (profileCreationError) {
+        alert(profileCreationError.message);
+        return;
+      }
+
+      alert("Profile created successfully.");
+    }
     if (error) {
       alert(error.message);
     } else {
