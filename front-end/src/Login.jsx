@@ -28,7 +28,7 @@ const handleLogin = async (e) => {
       .single(); // Use single() to get one result (or null if not found)
 
     if (profileError) {
-      if (profileError.code === 'PGRST116') {
+      
         // No profile found, create a new profile
         const { data, error: profileCreationError } = await supabase
           .from("profiles")
@@ -52,7 +52,7 @@ const handleLogin = async (e) => {
         alert(`Error fetching profile: ${profileError.message}`);
         return;
       }
-    }
+    
 
     // After login and profile creation (if needed), navigate to the form
     navigate("/form"); // Redirect to form after login
