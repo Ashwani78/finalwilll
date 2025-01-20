@@ -6,7 +6,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-const handleLogin = async (e) => {
+
+  const handleLogin = async (e) => {
   e.preventDefault();
   
   const { user, error } = await supabase.auth.signInWithPassword({
@@ -20,21 +21,21 @@ const handleLogin = async (e) => {
   }
 
   if (user) {
-    // Attempt to fetch profile data
+    // Attempt to fetch profile data by user_id
     const { data: profileData, error: profileError } = await supabase
       .from("profiles")
       .select("*")
-      .eq("id", user.id)
-      .single(); // Use single() to get one result (or null if not found)
+      .eq("user_id", user.id) // Assuming the 'profiles' table has a 'user_id' column
+      .single();
 
     if (profileError) {
-      
+      if (profileError.code === 'PGRST116') { // Profile doesn't exist (or empty result)
         // No profile found, create a new profile
         const { data, error: profileCreationError } = await supabase
           .from("profiles")
           .insert([
             {
-              id: user.id,
+              user_id: user.id, // Use user_id to link profile with user
               subscription_type: "onetime", // Default subscription type
               subscription_start: new Date().toISOString().split("T")[0], // Current date
               subscription_end: new Date().toISOString().split("T")[0], // Current date
@@ -52,12 +53,13 @@ const handleLogin = async (e) => {
         alert(`Error fetching profile: ${profileError.message}`);
         return;
       }
-    
+    }
 
-    // After login and profile creation (if needed), navigate to the form
+    // If profile exists, or after profile creation, navigate to form
     navigate("/form"); // Redirect to form after login
   }
 };
+
 
 
   const handleLoginSuccess = (email) => {
