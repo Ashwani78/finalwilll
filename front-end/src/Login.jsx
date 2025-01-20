@@ -33,7 +33,7 @@ const Login = () => {
     const { data: profileData, error: profileError } = await supabase
       .from("profiles")
       .select("*")
-      .eq("user_id", user.id) // Assuming the 'profiles' table has a 'user_id' column
+      .eq("id", user.id) // Assuming the 'profiles' table has a 'user_id' column
       .single();
 
     if (profileError) {
@@ -47,7 +47,7 @@ const Login = () => {
           .from("profiles")
           .insert([
             {
-              user_id: user.id, // Link profile with user
+              id: user.id, // Link profile with user
               subscription_type: "onetime", // Default subscription type
               subscription_start: new Date().toISOString().split("T")[0], // Current date
               subscription_end: new Date().toISOString().split("T")[0], // Current date
