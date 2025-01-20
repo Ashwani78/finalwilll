@@ -6,14 +6,21 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+const handleLogin = async (e) => {
+  e.preventDefault();
   
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const { user, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (user) {
+  // Attempt to log in the user
+  const { user, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  if (user) {
     // Check if the profile already exists for the user
     const { data: profileData, error: profileError } = await supabase
       .from("profiles")
@@ -21,16 +28,17 @@ const Login = () => {
       .eq("id", user.id)
       .single(); // Use single() to get one result (or null if not found)
 
-    if (profileError && profileError.code === 'PGRST116') { // Profile doesn't exist
-      // Create a new profile for the user if it doesn't exist
-      const { data, profileCreationError } = await supabase
+    // If no profile is found, create one
+    if (profileError && profileError.code === 'PGRST116') { 
+      // Profile doesn't exist, so create one
+      const { data, error: profileCreationError } = await supabase
         .from("profiles")
         .insert([
           {
             id: user.id,
-            subscription_type: "onetime",
-            subscription_start: new Date().toISOString().split("T")[0],
-            subscription_end: new Date().toISOString().split("T")[0], // Current date
+            subscription_type: "onetime", // Default to 'onetime' subscription
+            subscription_start: new Date().toISOString().split("T")[0], // Current date as subscription start
+            subscription_end: new Date().toISOString().split("T")[0], // Current date as subscription end (or adjust as needed)
           },
         ]);
 
@@ -41,13 +49,12 @@ const Login = () => {
 
       alert("Profile created successfully.");
     }
-} 
-    if (error) {
-      alert(error.message);
-    } else {
-      navigate("/form"); // Redirect to form after login
-    }
-  };
+
+    // After login and profile creation (if needed), navigate to the form
+    navigate("/form"); // Redirect to form after login
+  }
+};
+
 
   const handleLoginSuccess = (email) => {
     // Clear old form data
