@@ -6,6 +6,10 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const handleLogin = async (e) => {
     e.preventDefault();
     const { user, error } = await supabase.auth.signInWithPassword({
@@ -40,6 +44,7 @@ const Login = () => {
 
       alert("Profile created successfully.");
     }
+}
     if (error) {
       alert(error.message);
     } else {
