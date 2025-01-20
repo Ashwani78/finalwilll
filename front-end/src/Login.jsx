@@ -9,7 +9,6 @@ const Login = () => {
 const handleLogin = async (e) => {
   e.preventDefault();
   
-  // Attempt to log in the user
   const { user, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -21,33 +20,38 @@ const handleLogin = async (e) => {
   }
 
   if (user) {
-    // Check if the profile already exists for the user
+    // Attempt to fetch profile data
     const { data: profileData, error: profileError } = await supabase
       .from("profiles")
       .select("*")
       .eq("id", user.id)
       .single(); // Use single() to get one result (or null if not found)
 
-    // If no profile is found, create one
-    if (profileError && profileError.code === 'PGRST116') { 
-      // Profile doesn't exist, so create one
-      const { data, error: profileCreationError } = await supabase
-        .from("profiles")
-        .insert([
-          {
-            id: user.id,
-            subscription_type: "onetime", // Default to 'onetime' subscription
-            subscription_start: new Date().toISOString().split("T")[0], // Current date as subscription start
-            subscription_end: new Date().toISOString().split("T")[0], // Current date as subscription end (or adjust as needed)
-          },
-        ]);
+    if (profileError) {
+      if (profileError.code === 'PGRST116') {
+        // No profile found, create a new profile
+        const { data, error: profileCreationError } = await supabase
+          .from("profiles")
+          .insert([
+            {
+              id: user.id,
+              subscription_type: "onetime", // Default subscription type
+              subscription_start: new Date().toISOString().split("T")[0], // Current date
+              subscription_end: new Date().toISOString().split("T")[0], // Current date
+            },
+          ]);
 
-      if (profileCreationError) {
-        alert(profileCreationError.message);
+        if (profileCreationError) {
+          alert(profileCreationError.message);
+          return;
+        }
+
+        alert("Profile created successfully.");
+      } else {
+        // Handle other errors related to profile fetching
+        alert(`Error fetching profile: ${profileError.message}`);
         return;
       }
-
-      alert("Profile created successfully.");
     }
 
     // After login and profile creation (if needed), navigate to the form
