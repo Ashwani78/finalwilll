@@ -7,6 +7,7 @@ import SubscriptionChoice from "./SubscriptionChoice";
 import Dashboard from "./Dashboard";
 import EditWill from "./EditWill";
 import Home from "./Home";
+import Temp from "./Temp";
 
 const AppRoutes = ({ user, subscription }) => {
   return (
@@ -16,6 +17,7 @@ const AppRoutes = ({ user, subscription }) => {
         path="/login"
         element={user ? <Navigate to="/subscription" /> : <Login />}
       />
+      <Route path="/:id" element={<Temp />} />
       <Route
         path="/signup"
         element={user ? <Navigate to="/subscription" /> : <Signup />}
