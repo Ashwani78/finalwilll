@@ -32,7 +32,7 @@ const Login = () => {
     if (profileError) {
       if (profileError.code === 'PGRST116') { // Profile doesn't exist (or empty result)
         // No profile found, create a new profile
-        console.log("creating new profile)
+        console.log("creating new profile")
         const { data, error: profileCreationError } = await supabase
           .from("profiles")
           .insert([
