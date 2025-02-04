@@ -16,7 +16,9 @@ const Signup = () => {
     } else {
       alert("Signup successful! Please check your email for confirmation.");
       await supabase.auth.signOut();
-      navigate("/login"); // Redirect to login after signup
+     setTimeout(() => {
+      navigate("/login");
+    }, 1000);
     }
   };
 
