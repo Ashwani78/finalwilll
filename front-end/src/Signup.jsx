@@ -11,38 +11,43 @@ const Signup = () => {
     e.preventDefault();
     const { user, error } = await supabase.auth.signUp({ email, password });
     console.log(user);
-    if(!user){
-      console.log("error")
-    } else{
-       const { data: profileData, error: profileError } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id) // Assuming the 'profiles' table has a 'user_id' column
-      .single();
+    if (!user) {
+      console.log("error");
+    } else {
+      const { data: profileData, error: profileError } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id) // Assuming the 'profiles' table has a 'user_id' column
+        .single();
 
-    if (profileError) {
-      
-      if (profileError.code === 'PGRST116') { // Profile doesn't exist (or empty result)
+      if (profileError) {
+        if (profileError.code === "PGRST116") {
+          // Profile doesn't exist (or empty result)
 
-        // No profile found, create a new profile
-        const { data, error: profileCreationError } = await supabase
-          .from("profiles")
-          .insert([
-            {
-              id: user.id, // Link profile with user
-              subscription_type: "onetime", // Default subscription type
-              subscription_start: new Date().toISOString().split("T")[0], // Current date
-              subscription_end: new Date().toISOString().split("T")[0], // Current date
-            },
-          ]);
+          // No profile found, create a new profile
+          const { data, error: profileCreationError } = await supabase
+            .from("profiles")
+            .insert([
+              {
+                id: user.id, // Link profile with user
+                subscription_type: "onetime", // Default subscription type
+                subscription_start: new Date().toISOString().split("T")[0], // Current date
+                subscription_end: new Date().toISOString().split("T")[0], // Current date
+              },
+            ]);
 
-        if (profileCreationError) {
-          console.error("Profile creation error:", profileCreationError.message);
-          alert(profileCreationError.message);
-          return;
+          if (profileCreationError) {
+            console.error(
+              "Profile creation error:",
+              profileCreationError.message
+            );
+            alert(profileCreationError.message);
+            return;
+          }
         }
+      }
     }
-   
+
     if (error) {
       alert(error.message);
     } else {
