@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import WillGenerator from "./WillGenerator.jsx";
 import Signup from "./Signup.jsx";
 import Login from "./Login.jsx";
-import SubscriptionChoice from "./SubscriptionChoice.js";
+import SubscriptionChoice from "./SubscriptionChoice.jsx";
 import Dashboard from "./Dashboard.jsx";
 import EditWill from "./EditWill.jsx";
 import Home from "./Home.jsx";
