@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router";
-import { saveWillToSupabase } from "./willOperations";
-import { supabase } from "./supabaseClient";
+import { saveWillToSupabase } from "./willOperations.js";
+import { supabase } from "./supabaseClient.js";
 import axios from "axios";
 // Add to your existing imports
 
@@ -268,7 +268,7 @@ const WillGenerator = ({ subscription }) => {
 
   const handleSave = async () => {
     try {
-      console.log(formData)
+      console.log(formData);
       // Update subscription
 
       // Save to localStorage
@@ -1771,7 +1771,7 @@ const WillGenerator = ({ subscription }) => {
             <option value="Furniture">Furniture</option>
             <option value="Paintings">Paintings</option>
             <option value="Firearm">Firearm</option>
-            <option value = "Residual Estate">Residual Estate</option>
+            <option value="Residual Estate">Residual Estate</option>
           </select>
         </div>
 
@@ -2501,7 +2501,7 @@ const WillGenerator = ({ subscription }) => {
       const pdfDoc = await PDFDocument.create();
       const timesRoman = await pdfDoc.embedFont(StandardFonts.TimesRoman);
       const timesBold = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
-      console.log(formData)
+      console.log(formData);
 
       // Keep your existing helper functions exactly as they are
       const addPage = (pageNum) => {
@@ -2537,54 +2537,59 @@ const WillGenerator = ({ subscription }) => {
       };
 
       // Keep your existing writeText function exactly as is
-     const writeText = (page, text, options = {}) => {
-  const {
-    x = 50,
-    y,
-    size = 12,
-    font = timesRoman,
-    color = rgb(0, 0, 0),
-    maxWidth = 500,
-    indent = 0,
-    align = "left",
-    lineSpacing = 1,
-  } = options;
+      const writeText = (page, text, options = {}) => {
+        const {
+          x = 50,
+          y,
+          size = 12,
+          font = timesRoman,
+          color = rgb(0, 0, 0),
+          maxWidth = 500,
+          indent = 0,
+          align = "left",
+          lineSpacing = 1,
+        } = options;
 
-  const lines = text.split("\n"); // Split the text into lines by \n
-  let yPos = y;
+        const lines = text.split("\n"); // Split the text into lines by \n
+        let yPos = y;
 
-  lines.forEach((line) => {
-    const words = line.split(" ");
-    const actualX = x + indent * 20;
+        lines.forEach((line) => {
+          const words = line.split(" ");
+          const actualX = x + indent * 20;
 
-    let currentLine = "";
-    const renderedLines = [];
+          let currentLine = "";
+          const renderedLines = [];
 
-    for (const word of words) {
-      const testLine = currentLine ? `${currentLine} ${word}` : word;
-      const width = font.widthOfTextAtSize(testLine, size);
+          for (const word of words) {
+            const testLine = currentLine ? `${currentLine} ${word}` : word;
+            const width = font.widthOfTextAtSize(testLine, size);
 
-      if (width > maxWidth && currentLine) {
-        renderedLines.push(currentLine);
-        currentLine = word;
-      } else {
-        currentLine = testLine;
-      }
-    }
+            if (width > maxWidth && currentLine) {
+              renderedLines.push(currentLine);
+              currentLine = word;
+            } else {
+              currentLine = testLine;
+            }
+          }
 
-    if (currentLine) {
-      renderedLines.push(currentLine);
-    }
+          if (currentLine) {
+            renderedLines.push(currentLine);
+          }
 
-    renderedLines.forEach((renderedLine) => {
-      page.drawText(renderedLine, { x: actualX, y: yPos, size, font, color });
-      yPos -= size * lineSpacing;
-    });
-  });
+          renderedLines.forEach((renderedLine) => {
+            page.drawText(renderedLine, {
+              x: actualX,
+              y: yPos,
+              size,
+              font,
+              color,
+            });
+            yPos -= size * lineSpacing;
+          });
+        });
 
-  return yPos - size * 0.5; // Return the updated yOffset
-};
-
+        return yPos - size * 0.5; // Return the updated yOffset
+      };
 
       // Keep your existing helper functions
       const drawDottedLine = (page, startX, startY, length, options = {}) => {
@@ -2836,10 +2841,10 @@ const WillGenerator = ({ subscription }) => {
 
       // Songs
       formData.songs?.forEach((song) => {
-        yOffset = writeText(currentPage, `- ${Object.values(song)[0]}` , {
+        yOffset = writeText(currentPage, `- ${Object.values(song)[0]}`, {
           y: yOffset,
           indent: 1,
-          lineSpacing: 0.5 ,
+          lineSpacing: 0.5,
         });
         yOffset -= 10;
       });
@@ -2988,23 +2993,24 @@ const WillGenerator = ({ subscription }) => {
       });
       yOffset -= 20;
 
-    const array = [];
-formData.possessions?.forEach((item) => {
-  if (item.type === "Residual Estate") {
-    item.beneficiaries?.forEach((single) => {
-      array.push(single.fullName);
-    });
-  }
-});
+      const array = [];
+      formData.possessions?.forEach((item) => {
+        if (item.type === "Residual Estate") {
+          item.beneficiaries?.forEach((single) => {
+            array.push(single.fullName);
+          });
+        }
+      });
 
-const text = `I give, devise and bequeath all the rest, residue and remainder of my estate, including any proceeds from the sale of assets to ${array.join(", ")} in equal shares.`;
+      const text = `I give, devise and bequeath all the rest, residue and remainder of my estate, including any proceeds from the sale of assets to ${array.join(
+        ", "
+      )} in equal shares.`;
 
-yOffset = writeText(currentPage, text, {
-  y: yOffset,
-  lineSpacing: 1.5,
-});
-yOffset -= 40;
-
+      yOffset = writeText(currentPage, text, {
+        y: yOffset,
+        lineSpacing: 1.5,
+      });
+      yOffset -= 40;
 
       // Signature Section
       yOffset = writeText(
@@ -3033,12 +3039,10 @@ yOffset -= 40;
         }
       );
 
-     
-
       // ... your existing residual estate code ...
 
       // Witness Section (keep exactly as is)
-          yOffset -= 40;
+      yOffset -= 40;
       yOffset = writeText(
         currentPage,
         "executed this Last will and testament willingly and in the presence of the following witnesses, who are present at the same time and who have signed as witnesses in my presence:",
@@ -3048,8 +3052,7 @@ yOffset -= 40;
         }
       );
 
-       yOffset -= 40;
-
+      yOffset -= 40;
 
       // Witness Section
       yOffset = writeText(currentPage, "WITNESSES", {
@@ -3170,7 +3173,6 @@ yOffset -= 40;
       // ... rest of your existing witness section code ...
 
       // Final Declaration (keep exactly as is)
-  
 
       // Generate the final PDF
       const pdfBytes = await pdfDoc.save();

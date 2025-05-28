@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { supabase } from "./supabaseClient";
+import { supabase } from "./supabaseClient.js";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
@@ -16,9 +16,9 @@ const Signup = () => {
     } else {
       alert("Signup successful! Please check your email for confirmation.");
       await supabase.auth.signOut();
-     setTimeout(() => {
-      navigate("/login");
-    }, 1000);
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     }
   };
 

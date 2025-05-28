@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "./supabaseClient";
+import { supabase } from "./supabaseClient.js";
 import emailjs from "emailjs-com";
 import axios from "axios";
 import {
@@ -249,54 +249,54 @@ const Dashboard = () => {
     setShowUploadModal(false);
   };
 
- const handleShareLink = async (event) => {
-  // Upload the file and get the file path
-  const filePath = await uploadFile(event.target.files[0]); // Assuming the input is a file input
+  const handleShareLink = async (event) => {
+    // Upload the file and get the file path
+    const filePath = await uploadFile(event.target.files[0]); // Assuming the input is a file input
 
-  if (filePath) {
-    // Generate the signed URL and download the file directly
-    const url = await createDownloadLink(filePath);
-   setFileUrl(url);
-  }
-};
+    if (filePath) {
+      // Generate the signed URL and download the file directly
+      const url = await createDownloadLink(filePath);
+      setFileUrl(url);
+    }
+  };
 
-const createDownloadLink = async (filePath) => {
-  try {
-    // Set the TTL (time-to-live) to 30 days (2592000 seconds)
-    const { data, error } = await supabase.storage
-      .from("share") // Replace with your bucket name
-      .createSignedUrl(filePath, 2592000); // 30 days in seconds
+  const createDownloadLink = async (filePath) => {
+    try {
+      // Set the TTL (time-to-live) to 30 days (2592000 seconds)
+      const { data, error } = await supabase.storage
+        .from("share") // Replace with your bucket name
+        .createSignedUrl(filePath, 2592000); // 30 days in seconds
 
-    if (error) throw error;
+      if (error) throw error;
 
-    // Return the signed URL
-    return data.signedUrl;
-  } catch (error) {
-    console.error("Error generating download link:", error.message);
-    return null;
-  }
-};
+      // Return the signed URL
+      return data.signedUrl;
+    } catch (error) {
+      console.error("Error generating download link:", error.message);
+      return null;
+    }
+  };
 
-const uploadFile = async (file) => {
-  try {
-    const fileExt = file.name.split(".").pop();
-    const fileName = `Will-${Date.now()}.${fileExt}`; // Add some unique naming to avoid conflicts
-    const filePath = `my-files/${fileName}`;
-    setSharewill(file);
-    
-    const { data, error } = await supabase.storage.from("share").upload(filePath, file);
+  const uploadFile = async (file) => {
+    try {
+      const fileExt = file.name.split(".").pop();
+      const fileName = `Will-${Date.now()}.${fileExt}`; // Add some unique naming to avoid conflicts
+      const filePath = `my-files/${fileName}`;
+      setSharewill(file);
 
-    if (error) throw error;
+      const { data, error } = await supabase.storage
+        .from("share")
+        .upload(filePath, file);
 
-    // Return the file path after uploading
-    return filePath;
-  } catch (error) {
-    console.error("Error uploading file:", error.message);
-    return null;
-  }
-};
+      if (error) throw error;
 
-
+      // Return the file path after uploading
+      return filePath;
+    } catch (error) {
+      console.error("Error uploading file:", error.message);
+      return null;
+    }
+  };
 
   const handleDeleteFile = async (fileId) => {
     if (
@@ -495,7 +495,7 @@ const uploadFile = async (file) => {
         )}
 
         <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-          { fileUrl !== "" ? (
+          {fileUrl !== "" ? (
             <div>
               {" "}
               <input

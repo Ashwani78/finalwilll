@@ -1,6 +1,6 @@
 // src/willOperations.js
 
-import { supabase } from "./supabaseClient";
+import { supabase } from "./supabaseClient.js";
 
 export const saveWillToSupabase = async (formData) => {
   try {

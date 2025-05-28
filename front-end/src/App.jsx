@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
-import AppRoutes from "./AppRoutes";
-import { supabase } from "./supabaseClient";
-import Navbar from "./Navbar";
-import EditWillForm from "./EditWillForm";
-import { UserContextProvider } from "./context/Context";
+import AppRoutes from "./AppRoutes.jsx";
+import { supabase } from "./supabaseClient.js";
+import Navbar from "./Navbar.jsx";
+import EditWillForm from "./EditWillForm.jsx";
+import { UserContextProvider } from "./context/Context.jsx";
 
 // Separate LoadingSpinner component
 const LoadingSpinner = () => (

@@ -1,12 +1,12 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import WillGenerator from "./WillGenerator";
-import Signup from "./Signup";
-import Login from "./Login";
-import SubscriptionChoice from "./SubscriptionChoice";
-import Dashboard from "./Dashboard";
-import EditWill from "./EditWill";
-import Home from "./Home";
+import WillGenerator from "./WillGenerator.jsx";
+import Signup from "./Signup.jsx";
+import Login from "./Login.jsx";
+import SubscriptionChoice from "./SubscriptionChoice.js";
+import Dashboard from "./Dashboard.jsx";
+import EditWill from "./EditWill.jsx";
+import Home from "./Home.jsx";
 
 const AppRoutes = ({ user, subscription }) => {
   return (

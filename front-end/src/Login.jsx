@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { supabase } from "./supabaseClient";
+import { supabase } from "./supabaseClient.js";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -8,75 +8,78 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-  e.preventDefault();
-  
-  try {
-    // Try to sign in
-    const { data :{user}, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    e.preventDefault();
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
+    try {
+      // Try to sign in
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    console.log("Authenticated user:", user); // Log the user object to verify
-
-    if (!user) {
-      alert("No authenticated user.");
-      return;
-    }
-
-    // Attempt to fetch profile data by user_id
-    const { data: profileData, error: profileError } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id) // Assuming the 'profiles' table has a 'user_id' column
-      .single();
-
-    if (profileError) {
-      
-      if (profileError.code === 'PGRST116') { // Profile doesn't exist (or empty result)
-
-        // No profile found, create a new profile
-        const { data, error: profileCreationError } = await supabase
-          .from("profiles")
-          .insert([
-            {
-              id: user.id, // Link profile with user
-              subscription_type: "onetime", // Default subscription type
-              subscription_start: new Date().toISOString().split("T")[0], // Current date
-              subscription_end: new Date().toISOString().split("T")[0], // Current date
-            },
-          ]);
-
-        if (profileCreationError) {
-          console.error("Profile creation error:", profileCreationError.message);
-          alert(profileCreationError.message);
-          return;
-        }
-
-        console.log("Profile created successfully:", data);
-      } else {
-        // Handle other errors related to profile fetching
-        console.error("Error fetching profile:", profileError.message);
+      if (error) {
+        alert(error.message);
         return;
       }
+
+      console.log("Authenticated user:", user); // Log the user object to verify
+
+      if (!user) {
+        alert("No authenticated user.");
+        return;
+      }
+
+      // Attempt to fetch profile data by user_id
+      const { data: profileData, error: profileError } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id) // Assuming the 'profiles' table has a 'user_id' column
+        .single();
+
+      if (profileError) {
+        if (profileError.code === "PGRST116") {
+          // Profile doesn't exist (or empty result)
+
+          // No profile found, create a new profile
+          const { data, error: profileCreationError } = await supabase
+            .from("profiles")
+            .insert([
+              {
+                id: user.id, // Link profile with user
+                subscription_type: "onetime", // Default subscription type
+                subscription_start: new Date().toISOString().split("T")[0], // Current date
+                subscription_end: new Date().toISOString().split("T")[0], // Current date
+              },
+            ]);
+
+          if (profileCreationError) {
+            console.error(
+              "Profile creation error:",
+              profileCreationError.message
+            );
+            alert(profileCreationError.message);
+            return;
+          }
+
+          console.log("Profile created successfully:", data);
+        } else {
+          // Handle other errors related to profile fetching
+          console.error("Error fetching profile:", profileError.message);
+          return;
+        }
+      }
+    } catch (error) {
+      // Catch any errors
+      console.error("Error during login:", error.message);
+      alert("An error occurred during login.");
+    } finally {
+      // Always navigate to the form page, regardless of success or failure
+      navigate("/form");
     }
-
-  } catch (error) {
-    // Catch any errors
-    console.error("Error during login:", error.message);
-    alert("An error occurred during login.");
-  } finally {
-    // Always navigate to the form page, regardless of success or failure
-    navigate("/form");
-  }
-};
-
-
+  };
 
   const handleLoginSuccess = (email) => {
     // Clear old form data

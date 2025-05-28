@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import { supabase } from './supabaseClient';
+import React, { useEffect, useState } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { supabase } from "./supabaseClient.js";
 
 const PrivateRoute = ({ children, requiredSubscription = false }) => {
   const [loading, setLoading] = useState(true);
@@ -11,33 +11,37 @@ const PrivateRoute = ({ children, requiredSubscription = false }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         setUser(user);
 
         if (user && requiredSubscription) {
           // Check subscription status from profiles table
           const { data: profile, error } = await supabase
-            .from('profiles')
-            .select('subscription_type, subscription_end')
-            .eq('id', user.id)
+            .from("profiles")
+            .select("subscription_type, subscription_end")
+            .eq("id", user.id)
             .single();
 
           if (error) {
-            console.error('Error fetching subscription:', error);
+            console.error("Error fetching subscription:", error);
             return;
           }
 
           // Check if yearly subscription is expired
-          if (profile?.subscription_type === 'yearly' && 
-              profile.subscription_end && 
-              new Date(profile.subscription_end) < new Date()) {
-            setSubscription('expired');
+          if (
+            profile?.subscription_type === "yearly" &&
+            profile.subscription_end &&
+            new Date(profile.subscription_end) < new Date()
+          ) {
+            setSubscription("expired");
           } else {
             setSubscription(profile?.subscription_type);
           }
         }
       } catch (error) {
-        console.error('Auth check error:', error);
+        console.error("Auth check error:", error);
       } finally {
         setLoading(false);
       }
@@ -45,27 +49,29 @@ const PrivateRoute = ({ children, requiredSubscription = false }) => {
 
     checkAuth();
 
-    const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setUser(session?.user || null);
-        
-        if (session?.user && requiredSubscription) {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('subscription_type, subscription_end')
-            .eq('id', session.user.id)
-            .single();
+    const {
+      data: { subscription: authSubscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      setUser(session?.user || null);
 
-          if (profile?.subscription_type === 'yearly' && 
-              profile.subscription_end && 
-              new Date(profile.subscription_end) < new Date()) {
-            setSubscription('expired');
-          } else {
-            setSubscription(profile?.subscription_type);
-          }
+      if (session?.user && requiredSubscription) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("subscription_type, subscription_end")
+          .eq("id", session.user.id)
+          .single();
+
+        if (
+          profile?.subscription_type === "yearly" &&
+          profile.subscription_end &&
+          new Date(profile.subscription_end) < new Date()
+        ) {
+          setSubscription("expired");
+        } else {
+          setSubscription(profile?.subscription_type);
         }
       }
-    );
+    });
 
     return () => {
       authSubscription?.unsubscribe();
@@ -94,16 +100,16 @@ const PrivateRoute = ({ children, requiredSubscription = false }) => {
     }
 
     // For form access
-    if (location.pathname === '/form') {
+    if (location.pathname === "/form") {
       // Allow both onetime and yearly subscribers to access form
-      if (subscription !== 'onetime' && subscription !== 'yearly') {
+      if (subscription !== "onetime" && subscription !== "yearly") {
         return <Navigate to="/subscription" replace />;
       }
     }
     // For dashboard access
-    else if (location.pathname === '/dashboard') {
+    else if (location.pathname === "/dashboard") {
       // Only allow yearly subscribers to access dashboard
-      if (subscription !== 'yearly') {
+      if (subscription !== "yearly") {
         return <Navigate to="/subscription" replace />;
       }
     }

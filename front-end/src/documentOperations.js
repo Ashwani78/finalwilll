@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "./supabaseClient";
+import { supabase } from "./supabaseClient.js";
 import emailjs from "emailjs-com";
 import axios from "axios";
 import {
@@ -251,11 +251,11 @@ const Dashboard = () => {
   const handleShareLink = async (event) => {
     // Upload the file and get the file path
     const filePath = await uploadFile(event.target.files[0]); // Assuming the input is a file input
-  
+
     if (filePath) {
       // Generate the signed URL and set it
       const url = await createDownloadLink(filePath);
-      console.log(url)
+      console.log(url);
       setFileUrl(url);
     }
   };
@@ -266,9 +266,9 @@ const Dashboard = () => {
       const { data, error } = await supabase.storage
         .from("share") // Replace with your bucket name
         .createSignedUrl(filePath, 2592000); // 30 days in seconds
-  
+
       if (error) throw error;
-  
+
       // Return the signed URL
       return data.signedUrl;
     } catch (error) {
@@ -282,11 +282,13 @@ const Dashboard = () => {
       const fileExt = file.name.split(".").pop();
       const fileName = `Will-${Date.now()}.${fileExt}`; // Add some unique naming to avoid conflicts
       const filePath = `my-files/${fileName}`;
-      
-      const { data, error } = await supabase.storage.from("share").upload(filePath, file);
-  
+
+      const { data, error } = await supabase.storage
+        .from("share")
+        .upload(filePath, file);
+
       if (error) throw error;
-  
+
       // Return the file path after uploading
       return filePath;
     } catch (error) {

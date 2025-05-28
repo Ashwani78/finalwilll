@@ -1,7 +1,7 @@
 // Navbar.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "./supabaseClient";
+import { supabase } from "./supabaseClient.js";
 
 const Navbar = ({ userEmail, subscription }) => {
   const navigate = useNavigate();
